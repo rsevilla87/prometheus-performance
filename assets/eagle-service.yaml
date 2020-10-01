@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: eagle-{{.Iteration}}-{{.Replica}}
+  name: eagle-service-{{.Iteration}}-{{.Replica}}
+spec:
+  ports:
+  - name: metrics
+    port: 8080
+    protocol: TCP
+    targetPort: metrics
+  selector:
+    app.kubernetes.io/name: eagle-{{.Iteration}}-{{.Replica}}
