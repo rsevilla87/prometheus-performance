@@ -18,7 +18,7 @@ The key points of the test scenario are the following:
 
 prometheus_tsdb_head_series
 
-Legend: {{ job}}
+Legend: `{{ job}}`
 
 - Number of series by job and namespace: sum by (job,namespace) (prometheus_tsdb_head_series{})
 
@@ -35,8 +35,9 @@ Legend: {{ job}}
 
 ## Iterations
 
-50 worker nodes: 1 namespace with 100 pods. 100 * 100 series = 10K series
-50 worker nodes: 10 namespaces with 100 pods each. 1000 * 100 series = 100K series
-50 worker nodes: 100 namespaces with 100 pods each. 10000 * 100 series = 1M series
-50 worker nodes: 100 namespaces with 100 pods each. 10000 * 400 series = 4M series
+50 worker nodes: 1 namespace with 100 pods. `1 ns * 100 pods * 100 series = 10K series`
+50 worker nodes: 5 namespaces with 100 pods each. `5 ns * 100 pods * 100 series = 50K series`
+50 worker nodes: 10 namespaces with 100 pods each. `10 ns * 100 pods * 100 series = 100K series`
+50 worker nodes: 50 namespaces with 100 pods each. 50 ns * 100 pods * 100 series = 500K series`
+50 worker nodes: 100 namespaces with 100 pods each. `100 ns * 100 pods * 100 series = 1M series`
 

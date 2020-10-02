@@ -15,8 +15,10 @@ spec:
       labels:
         app.kubernetes.io/name: eagle-{{.Iteration}}-{{.Replica}}
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: ""
       containers:
-      - image: quay.io/paulfantom/eagle:master
+      - image: quay.io/rsevilla/eagle:latest
         imagePullPolicy: Always
         name: eagle
         command: ["eagle"]

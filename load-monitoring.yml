@@ -6,9 +6,9 @@ global:
 
 jobs:
   - name: load-monitoring
-    jobIterations: 10
-    qps: 40
-    burst: 40
+    jobIterations: 100
+    qps: 20
+    burst: 20
     namespacedIterations: true
     namespace: load-monitoring
     cleanup: true
