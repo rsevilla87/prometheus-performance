@@ -65,9 +65,8 @@ KPIs:
   - Disk usage
 
 **Test scenarios**
-- 50 worker nodes: 1 namespace * 100 deployments * 10 replicas * 1 series = 1K targets
-- 50 worker nodes: 10 namespace * 100 deployments * 10 replicas * 1 series = 10K targets
-- 50 worker nodes: 25 namespace * 100 deployments * 10 replicas * 1 series = 25K targets
+- 50 worker nodes: 10 namespace * 100 deployments * 10 replicas * 10 static series = 10K targets and 100K series
+- 50 worker nodes: 25 namespace * 100 deployments * 10 replicas * 10 static series = 25K targets
 
 ---
 
