@@ -6,9 +6,9 @@ global:
 
 jobs:
   - name: load-monitoring
-    jobIterations: 100
-    qps: 20
-    burst: 20
+    jobIterations: 8
+    qps: 50
+    burst: 50
     namespacedIterations: true
     namespace: load-monitoring
     cleanup: true
@@ -18,13 +18,15 @@ jobs:
       - objectTemplate: assets/eagle-deployment.yaml
         replicas: 100
         inputVars:
-          tempo: 50                # 100 series
-          increaseSamples: false
+          tempo: 5                # 10 series
           labelValueExplosion: true
           labelNameExplosion: true
+          staticMetrics: false
+          podReplicas: 10
 
       - objectTemplate: assets/eagle-service.yaml
         replicas: 100
+
       - objectTemplate: assets/eagle-servicemonitor.yaml
         replicas: 100
 

@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: eagle
   name: eagle-{{.Iteration}}-{{.Replica}}
 spec:
-  replicas: 1
+  replicas: {{.podReplicas}}
   selector:
     matchLabels:
       app.kubernetes.io/name: eagle-{{.Iteration}}-{{.Replica}}
@@ -18,7 +18,7 @@ spec:
       nodeSelector:
         node-role.kubernetes.io/worker: ""
       containers:
-      - image: quay.io/rsevilla/eagle:latest
+      - image: quay.io/rsevilla/eagle:static
         imagePullPolicy: Always
         name: eagle
         command: ["eagle"]
@@ -26,7 +26,7 @@ spec:
           - -tempo={{.tempo}}
           - -label-value-explosion={{.labelValueExplosion}}
           - -label-name-explosion={{.labelNameExplosion}}
-          - -explode-samples-scraped={{.increaseSamples}}
+          - -static-metrics={{.staticMetrics}}
         ports:
           - containerPort: 8080
             name: metrics

@@ -3,7 +3,7 @@
 trap exit_script SIGINT
 
 log() {
-    echo ${bold}$(date "+%d-%m-%YT%H:%m:%S") ${@}${normal}
+    echo $(date "+%d-%m-%YT%H:%m:%S") ${@}
 }
 
 usage() {
@@ -12,23 +12,27 @@ Usage: ${0} -j <job-name>
 Options:
   -j Job name
   -s Sleep period beforing stopping conprof
+  -c Kube-burner config file
 EOF
 exit 0
 }
 
 exit_script () {
-  log "Ctrl-C detected"
-  kill -2 ${pid}
-  stop_conprof
+  log "Ctrl-C detected, destroying assets"
+  kube-burner destroy -c ${CONFIG} --uuid ${UUID}
+  exit 1
 }
 
-while getopts "j:s:h" opt; do
+while getopts "j:s:c:h" opt; do
   case ${opt} in
     j )
       JOB_NAME=$OPTARG
       ;;
     s )
       SLEEP_PERIOD=$OPTARG
+      ;;
+    c )
+      CONFIG=$OPTARG
       ;;
     h )
       usage 
@@ -43,16 +47,20 @@ if [[ -z ${JOB_NAME} ]] || [[ -z ${SLEEP_PERIOD} ]]; then
   usage
 fi
 
+if [[ ! -f ${CONFIG} ]]; then
+  echo "Config file ${CONFIG} not found"
+  exit 1
+fi
+
 UUID=$(uuidgen)
 
 log "Running test with uuid: ${UUID}"
 export TSDB=tsdb-${UUID}-${JOB_NAME}
 source conprof.sh
 start_conprof
-kube-burner init -c load-monitoring.yml --uuid ${UUID}
+kube-burner init -c ${CONFIG} --uuid ${UUID}
 log "Sleeping now ${SLEEP_PERIOD}"
 sleep ${SLEEP_PERIOD}
-stop_conprof
-kube-burner destroy -c load-monitoring.yml --uuid ${UUID}
+kube-burner destroy -c ${CONFIG} --uuid ${UUID}
 
 
