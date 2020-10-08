@@ -1,0 +1,32 @@
+---
+global:
+  writeToFile: false
+  indexerConfig:
+    enabled: false
+
+jobs:
+  - name: load-monitoring
+    jobIterations: 2
+    qps: 50
+    burst: 50
+    namespacedIterations: true
+    namespace: load-monitoring
+    cleanup: true
+    waitWhenFinished: true
+    podWait: false
+    objects:
+      - objectTemplate: assets/eagle-deployment.yaml
+        replicas: 1000
+        inputVars:
+          tempo: 5                # 10 series
+          labelValueExplosion: true
+          labelNameExplosion: true
+          staticMetrics: true
+          podReplicas: 1
+
+      - objectTemplate: assets/eagle-service.yaml
+        replicas: 1000
+
+      - objectTemplate: assets/eagle-servicemonitor.yaml
+        replicas: 1000
+

@@ -1,0 +1,58 @@
+scrape_configs:
+- job_name: prometheus-user-workload-0
+  scrape_interval: 20s 
+  scrape_timeout: 10s
+  scheme: https
+  tls_config:
+    insecure_skip_verify: true
+  bearer_token: TOKEN
+  profiling_config:
+    pprof_config:
+      heap:
+        enabled: true
+      profile:
+        enabled: false
+      goroutine:
+        enabled: false
+      threadcreate:
+        enabled: false
+      allocs:
+        enabled: false
+      block:
+        enabled: false
+      mutex:
+        enabled: false
+      trace:
+        enabled: false
+  static_configs:
+  - targets:
+    - TARGET1
+
+- job_name: prometheus-user-workload-1
+  scrape_interval: 120s 
+  scrape_timeout: 10s
+  scheme: https
+  tls_config:
+    insecure_skip_verify: true
+  bearer_token: TOKEN
+  profiling_config:
+    pprof_config:
+      heap:
+        enabled: true
+      profile:
+        enabled: false
+      goroutine:
+        enabled: false
+      threadcreate:
+        enabled: false
+      allocs:
+        enabled: false
+      block:
+        enabled: false
+      mutex:
+        enabled: false
+      trace:
+        enabled: false
+  static_configs:
+  - targets:
+    - TARGET2

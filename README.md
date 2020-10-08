@@ -7,6 +7,7 @@
 - 3xInfra nodes: m5.2xlarge
 
 Prometheus user-workload-monitoring-config configmap [here](assets/user-workload-monitoring-config.yaml)
+In order to avoid noise Cluster Prometheus and User workload prometheus pods are pinned to different nodes.
 
 ## Measurements
 ### Number of samples
@@ -50,8 +51,13 @@ KPIs:
 
 **Test scenarios**
 - 50 worker nodes: 1 namespace with 1000 servicemonitors pointing to 1 service each
-- 50 worker nodes: 1 namespace with 2000 servicemonitors pointing to 1 service each
-- 50 worker nodes: 1 namespace with 4000 servicemonitors pointing to 1 service each
+- 50 worker nodes: 2 namespace with 1000 servicemonitors pointing to 1 service each
+
+i.e. The first workload can be executed with the following command:
+
+```
+./load.sh -j 1000sm -s 60m -c service-monitors/load-monitoring-1000sm.yml
+```
 
 ---
 
@@ -65,8 +71,14 @@ KPIs:
   - Disk usage
 
 **Test scenarios**
-- 50 worker nodes: 10 namespace * 100 deployments * 10 replicas * 10 static series = 10K targets and 100K series
-- 50 worker nodes: 25 namespace * 100 deployments * 10 replicas * 10 static series = 25K targets
+- 50 worker nodes: 10 namespace * 100 deployments * 10 replicas * 5 static series = 10K targets and 150K series
+- 50 worker nodes: 10 namespace * 100 deployments * 10 replicas * 10 static series = 10K targets and 500K series
+
+i.e. The first workload can be executed with the following command:
+
+```
+./load.sh -j 10ktargets -s 60m -c targets/load-monitoring-targets-1.yml
+```
 
 ---
 

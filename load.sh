@@ -3,7 +3,7 @@
 trap exit_script SIGINT
 
 log() {
-    echo $(date "+%d-%m-%YT%H:%m:%S") ${@}
+    echo $(date "+%d-%m-%YT%H:%M:%S") ${@}
 }
 
 usage() {
@@ -11,7 +11,7 @@ usage() {
 Usage: ${0} -j <job-name>
 Options:
   -j Job name
-  -s Sleep period beforing stopping conprof
+  -s Sleep period beforing destroying assets and stopping pprof collection
   -c Kube-burner config file
 EOF
 exit 0
@@ -19,6 +19,9 @@ exit 0
 
 exit_script () {
   log "Ctrl-C detected, destroying assets"
+  log "Killing PID: ${pprof_pid}"
+  kill -6 ${pprof_pid}
+  stop_pprof
   kube-burner destroy -c ${CONFIG} --uuid ${UUID}
   exit 1
 }
@@ -55,12 +58,10 @@ fi
 UUID=$(uuidgen)
 
 log "Running test with uuid: ${UUID}"
-export TSDB=tsdb-${UUID}-${JOB_NAME}
-source conprof.sh
-start_conprof
+source pprof.sh
+start_pprof
 kube-burner init -c ${CONFIG} --uuid ${UUID}
 log "Sleeping now ${SLEEP_PERIOD}"
 sleep ${SLEEP_PERIOD}
 kube-burner destroy -c ${CONFIG} --uuid ${UUID}
-
-
+exit_script
